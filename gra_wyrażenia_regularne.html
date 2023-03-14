@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Wyrażenia</title>
+</head>
+<body>
+	<center>
+	<p id='p1'>30 sekund</p>
+	<p id='p2'>Wpisz wyraz wgedług wzoru 
+	<br>(jak najwięcej w 30 sekund):</p>
+	<input type='text' id='aaa'>
+	<input type='button' onclick='start()' id='btn' value='Start'>
+	</center>
+</body>
+</html>
+
+<script>
+	var score = 0
+	var time = 30
+	var wyr = ['^[0-9]$','[3-5]','2|7','[0-9]{2}-[0-9]{3}','^\\j{5}$','[b-h]', 'nie ma więcej']
+	const start = () => {
+		if(document.getElementById('btn').value == 'Start') {
+			document.getElementById('btn').value = 'Wyślij'
+			document.getElementById('p2').innerText = wyr[score]
+			var interval = setInterval(() => {
+				time -= 1
+				document.getElementById('p1').innerText = time + ' sekund(y)'
+				if(time == 0) {
+					clearInterval(interval)
+					document.getElementById('p1').innerHTML = `<h1>Koniec czasu!</h1><h1>Wynik: ${score}</h1>`
+					document.getElementById('p2').style.display = 'none'
+					document.getElementById('aaa').disabled = true
+					document.getElementById('aaa').value = ''
+					document.getElementById('aaa').style.background = 'white'
+					document.getElementById('btn').disabled = true
+				}
+			}, 1000)
+		} else if(document.getElementById('btn').value == 'Dalej') {
+			document.getElementById('aaa').style.background = 'white'
+			document.getElementById('aaa').value = ''
+			document.getElementById('btn').value = 'Wyślij'
+			document.getElementById('p2').innerText = wyr[score]
+		} else {
+			if(RegExp(document.getElementById('p2').innerText).test(document.getElementById('aaa').value)) {
+				document.getElementById('aaa').style.background = 'green'
+				score += 1
+				document.getElementById('btn').value = 'Dalej'
+			} else {
+				document.getElementById('aaa').style.background = 'red'
+			}
+		}
+	}
+</script>
